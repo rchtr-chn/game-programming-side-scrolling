@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Movement : MonoBehaviour
@@ -6,7 +7,8 @@ public class Movement : MonoBehaviour
     [SerializeField, Range(5f, 20f)] private float speed;
 
     private Rigidbody2D rb2d;
-    private float direction;
+    private Vector2 direction;
+    public InputActionReference move;
 
     private void Awake()
     {
@@ -19,18 +21,14 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
+        direction = move.action.ReadValue<Vector2>();
         UpdatePosition();
     }
 
     private void UpdatePosition()
     {
         Vector2 velocity = rb2d.velocity;
-        velocity.x = direction * speed;
+        velocity.x = direction.x * speed;
         rb2d.velocity = velocity;
-    }
-
-    public void SetDirection(float direction)
-    {
-        this.direction = direction;
     }
 }
